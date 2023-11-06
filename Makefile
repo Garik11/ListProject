@@ -11,12 +11,14 @@ all: obj list clean
 obj:
 	@mkdir obj
 
-list: obj/main.o obj/List.o
-	@$(CC) $(RFLAGS) obj/main.o obj/List.o -o $(PROGRAMNAME)
+list: obj/main.o obj/List.o obj/recalloc.o
+	@$(CC) $(RFLAGS) obj/main.o obj/List.o obj/recalloc.o -o $(PROGRAMNAME)
 
 obj/main.o: main.cpp
 	@$(CC) $(LFLAGS) $(RFLAGS) $< -o $@
 obj/List.o: src/List.cpp
+	@$(CC) $(LFLAGS) $(RFLAGS) $< -o $@
+obj/recalloc.o: src/recalloc/recalloc.cpp
 	@$(CC) $(LFLAGS) $(RFLAGS) $< -o $@
 clean:
 	@rm -rf ./obj/*.o list

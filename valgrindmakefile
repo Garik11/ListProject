@@ -1,0 +1,23 @@
+CC = g++
+
+LFLAGS = -c
+
+
+PROGRAMNAME = listproject
+
+all: obj list clean
+
+obj:
+	@mkdir obj
+
+list: obj/main.o obj/List.o obj/recalloc.o
+	@$(CC) obj/main.o obj/List.o obj/recalloc.o -o $(PROGRAMNAME)
+
+obj/main.o: main.cpp
+	@$(CC) $(LFLAGS) $< -o $@
+obj/List.o: src/List.cpp
+	@$(CC) $(LFLAGS) $< -o $@
+obj/recalloc.o: src/recalloc/recalloc.cpp
+	@$(CC) $(LFLAGS) $< -o $@
+clean:
+	@rm -rf ./obj/*.o list
