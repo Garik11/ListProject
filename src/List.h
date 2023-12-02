@@ -33,7 +33,7 @@ static const char *const LIST_DUMP_HEAD = "hhhhhhhhh";
 static const char *const LIST_DUMP_TAIL = "ttttttttt";
 static const char *const LIST_DUMP_EMPT = "         ";
 
-static const size_t LIST_STANDART_INITIAL_SIZE  = 15;
+static const size_t LIST_STANDART_INITIAL_SIZE  = 10;
 static const size_t LIST_STANDART_MULTIPLIER    = 2 ;
 
 static const int64_t    LIST_POISON         = 0xDEADBABE                        ;
@@ -53,7 +53,8 @@ struct List
     size_t tail;
 
 };
-
+/*Creates a list of size initial_size by initializing it with the initial_value element
+(the first element of the list is initial_value(ls.at(1) == initial_value)).*/
 List *ListCtor(const Elem_t initial_value, const size_t initial_size = LIST_STANDART_INITIAL_SIZE);
 
 ListErrors ListDtor(List *ls);
@@ -82,17 +83,20 @@ If you have lost it, write the search function,
 the author is not responsible for the slowness of such a program*/
 ListErrors ListPopBack  (List *ls, size_t element_before_delete);
 
-/*element_before_delete must be non-zero and not equal to tail
+/*element_before_delete must be non-zero and not equal to tail(or UB)
 Otherwise, use PopFront and PopBack respectively!*/
 ListErrors ListDelete(List *ls, size_t element_before_delete);
 
-/*Increases the data size by the specified number of times, by the standard twice*/
+/*Increases the data size by the specified number of times, by the standard twice.
+Automatic list does not increase its size, watch the size otherwise UB.*/
 ListErrors ListSizeMultiplyer   (List *ls, size_t multiplier = LIST_STANDART_MULTIPLIER);
 /*Puts head in the first place and tail in the last, replaces free elements between them.
 !WARNING:Your numbers and your pointers will NO be verified.
-All free elements disappear, an attempt to add will result in UB*/
+All free elements disappear, an attempt to add will result in UB.
+Uses a loop, so it works slowly, if you want fast, 
+use the list so that you never call this function.*/
 ListErrors ListShrinkToFit      (List *ls);
-
+/*Returns the corresponding data element with checks*/
 Elem_t *ListAt(const List *ls, const size_t pos);
 
 enum LISTERRORS

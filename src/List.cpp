@@ -1,13 +1,13 @@
 #include "List.h"
 
-List *ListCtor(const Elem_t initial_value, const size_t initial_size)
+List *ListCtor(const Elem_t initial_value, size_t initial_size)
 {
     assert(initial_size > 0);
 
     List* ls = (List*)calloc(1, sizeof(List));
     assert(ls != NULL);
 
-    ls->size = initial_size;
+    ls->size = initial_size + 1;
     ls->number_of_elements = 1;
 
     ls->data = (Elem_t*)calloc(ls->size, sizeof(Elem_t));
@@ -382,8 +382,6 @@ ListErrors ListShrinkToFit(List *ls)
         ls->data[next] = LIST_ELEM_POISON;
         ls->next[next] = LIST_POISON;
         next = nextcyc;
-        
-
     }
     //LIST_DUMP(ls, LIST_ALL_OK);
 
@@ -393,11 +391,6 @@ ListErrors ListShrinkToFit(List *ls)
         if(ls->data[next_free] == LIST_ELEM_POISON)
             break;
     }
-    #warning add error
-    printf("next_free = %lu\n", next_free);
-    //if(next_free == ls->size){
-    //    return errors;
-    //}
     printf("next_free = %lu\n", next_free);
     //
     //    pos = before ls->tail 
